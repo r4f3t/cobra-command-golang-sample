@@ -8,7 +8,8 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
-	"github.com/r4f3t/webapi/internal/user/controller"
+	"github.com/r4f3t/webapi/internal/user"
+	usercontroller "github.com/r4f3t/webapi/internal/user/controller"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +44,8 @@ func init() {
 	// repoları newleconst
 
 	// servisleri newle
+	userService := user.NewService("repo instance")
 
-	controller.MakeHandler(apiCmd.instance, nil)
+	usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
 
 }

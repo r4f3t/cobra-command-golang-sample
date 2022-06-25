@@ -4,28 +4,20 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/r4f3t/webapi/internal/user"
 )
 
 type resource struct {
-	// servis katmanını burda
+	service user.Service
 }
 
-func init() {
-	// Echo framework için yeni bir instance oluşturulur
-	e := echo.New()
+func NewController(service user.Service) *resource {
+	return &resource{
+		service: service,
+	}
+}
 
-	// Middleware tanımlamaları yapılır
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	// Endpoint'lerimiz oluşturulur.
-	// e.GET("/", services.Hello)
-
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-
-	// 3200 portundan API'ı ayağa kaldıralım
-	e.Logger.Fatal(e.Start(":3200"))
+func (receiver *resource) getUser(c echo.Context) error {
+	userId := receiver.service.GetUser()
+	return c.JSON(http.StatusOK, userId)
 }

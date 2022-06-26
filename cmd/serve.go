@@ -12,7 +12,7 @@ import (
 
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
-	Use:   "serve",
+	Use:   "serverft",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -26,7 +26,7 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	rootCmd.AddCommand(serveCmd)
+	RootCommand.cobraCommand.AddCommand(serveCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -1,7 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
@@ -23,29 +19,26 @@ type api struct {
 var apiCmd = &api{
 	command: &cobra.Command{
 		Use:   "api",
-		Short: "A brief description of your command",
-		Long: `A longer description that spans multiple lines and likely contains examples
-	and usage of using your command. For example:
-	
-	Cobra is a CLI library for Go that empowers applications.
-	This application is a tool to generate the needed files
-	to quickly create a Cobra application.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("api called")
-		},
+		Short: "",
+		Long:  "",
 	},
 	Port: "5000",
 }
 
 func init() {
-	rootCmd.AddCommand(apiCmd.command)
+	RootCommand.AddCommand(apiCmd.command)
 	apiCmd.instance = echo.New()
 
-	// repoları newleconst
+	apiCmd.command.RunE = func(cmd *cobra.Command, args []string) error {
+		// repoları newleconst
+		fmt.Printf(RootCommand.cfgFile)
 
-	// servisleri newle
-	userService := user.NewService("repo instance")
+		// servisleri newle
+		userService := user.NewService("repo instance")
 
-	usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
+		usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
+
+		return nil
+	}
 
 }

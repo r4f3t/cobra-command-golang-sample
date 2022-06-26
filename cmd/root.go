@@ -5,47 +5,70 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"os"
 
+	"github.com/r4f3t/webapi/internal/config"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-
+type RootCmd struct {
+	cfgFile      string
+	AppConfig    *config.Configuration
+	cobraCommand *cobra.Command
+}
 
 // rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "webapi",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+var RootCommand = RootCmd{
+	cobraCommand: &cobra.Command{
+		Use:   "webapi",
+		Short: "Servis Solution",
+		Long:  "Service Solution Smple",
+	},
+	AppConfig: &config.Configuration{},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	err := rootCmd.Execute()
+	err := RootCommand.cobraCommand.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	cobra.OnInitialize(initConfig)
+	RootCommand.cobraCommand.PersistentFlags().StringVarP(&RootCommand.cfgFile, "config", "c", "config.qa.yaml", "")
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.webapi.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
+func initConfig() {
+	if RootCommand.cfgFile != "" {
+		viper.SetConfigFile(RootCommand.cfgFile)
+	} else {
+		viper.AddConfigPath(".")
+		viper.SetConfigName("webapi.json")
+	}
 
+	viper.Set("Verbose", true)
+	viper.SetConfigType("json")
+
+	if err := viper.ReadInConfig(); err == nil {
+
+		err = viper.Unmarshal(RootCommand.AppConfig)
+		if err != nil {
+			vipers := viper.GetViper()
+			errors.New(vipers.ConfigFileUsed())
+		}
+	} else {
+		RootCommand.cobraCommand.Help()
+		// hata okuma yaparken
+	}
+
+}
+
+func (c *RootCmd) AddCommand(cmd *cobra.Command) {
+	c.cobraCommand.AddCommand(cmd)
+}

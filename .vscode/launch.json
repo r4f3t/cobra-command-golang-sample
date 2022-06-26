@@ -9,7 +9,12 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "main.go"
+            "program": "main.go",
+            "args": [
+                "api",
+                "-c",
+                "./config/config.qa.json"
+            ]
         }
     ]
 }

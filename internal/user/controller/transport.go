@@ -14,10 +14,7 @@ func MakeHandler(instance *echo.Echo, s *resource) {
 	e.Use(middleware.Recover())
 
 	// Endpoint'lerimiz oluşturulur.
-	// e.GET("/", services.Hello)
 
-	e.GET("/", s.getUser)
+	e.GET("/api/v1/user", s.getUser)
 
-	// 3200 portundan API'ı ayağa kaldıralım
-	e.Logger.Fatal(e.Start(":3200"))
 }

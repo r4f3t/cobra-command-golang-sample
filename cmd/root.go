@@ -40,7 +40,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	RootCommand.cobraCommand.PersistentFlags().StringVarP(&RootCommand.cfgFile, "config", "c", "config.qa.yaml", "")
+	RootCommand.cobraCommand.PersistentFlags().StringVarP(&RootCommand.cfgFile, "config", "c", "config.qa.json", "")
 
 }
 

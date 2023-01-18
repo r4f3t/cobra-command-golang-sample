@@ -27,6 +27,7 @@ var apiCmd = &api{
 
 func init() {
 	RootCommand.AddCommand(apiCmd.command)
+	apiCmd.command.Flags().StringVarP(&apiCmd.Port, "port", "p", "5000", "Service Port")
 	apiCmd.instance = echo.New()
 
 	apiCmd.command.RunE = func(cmd *cobra.Command, args []string) error {
@@ -37,6 +38,8 @@ func init() {
 		userService := user.NewService("repo instance")
 
 		usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
+
+		apiCmd.instance.Logger.Fatal(apiCmd.instance.Start(fmt.Sprintf(":%s", apiCmd.Port)))
 
 		return nil
 	}

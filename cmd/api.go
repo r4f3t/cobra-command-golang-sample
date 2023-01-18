@@ -27,6 +27,7 @@ var apiCmd = &api{
 
 func init() {
 	RootCommand.AddCommand(apiCmd.command)
+	//defines flags for api command specific
 	apiCmd.command.Flags().StringVarP(&apiCmd.Port, "port", "p", "5000", "Service Port")
 	apiCmd.instance = echo.New()
 

@@ -40,6 +40,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+	//defines flags that willbe used for all commands
 	RootCommand.cobraCommand.PersistentFlags().StringVarP(&RootCommand.cfgFile, "config", "c", "config.qa.json", "")
 
 }

@@ -5,15 +5,15 @@ type Service interface {
 }
 
 type service struct {
-	repo string
+	userRepository UserRepository
 }
 
-func NewService(repo string) Service {
+func NewService(userRepo UserRepository) Service {
 	return &service{
-		repo: repo,
+		userRepository: userRepo,
 	}
 }
 
 func (receiver *service) GetUser() string {
-	return "user bilgisi" + receiver.repo
+	return "user info :" + receiver.userRepository.GetUserFromDb()
 }

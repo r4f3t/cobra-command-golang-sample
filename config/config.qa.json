@@ -1,6 +1,6 @@
 {
     "SqlDbSettings": {
-        "Uri": "test db urisi",
+        "Uri": "test db uri",
         "DatabaseName": "test db"
     }
 }

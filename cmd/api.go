@@ -32,11 +32,12 @@ func init() {
 	apiCmd.instance = echo.New()
 
 	apiCmd.command.RunE = func(cmd *cobra.Command, args []string) error {
-		// repoları newleconst
-		fmt.Printf(RootCommand.cfgFile)
 
-		// servisleri newle
-		userService := user.NewService("repo instance")
+		// construct repository
+		userRepository := user.NewRepository(RootCommand.AppConfig.SqlDbSettings.Uri, RootCommand.AppConfig.SqlDbSettings.DatabaseName)
+
+		// construct service
+		userService := user.NewService(userRepository)
 
 		usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
 

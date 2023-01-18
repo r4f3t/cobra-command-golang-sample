@@ -65,7 +65,6 @@ func initConfig() {
 		}
 	} else {
 		RootCommand.cobraCommand.Help()
-		// hata okuma yaparken
 	}
 
 }
